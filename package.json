@@ -1,0 +1,33 @@
+{
+  "name": "typescript-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "dependencies": {
+    "@hubspot/api-client": "^3.4.1",
+    "async": "^3.2.0",
+    "aws-sdk": "^2.744.0",
+    "axios": "^0.20.0",
+    "lodash": "^4.17.20",
+    "mongoose": "^5.10.2",
+    "mysql": "^2.18.1",
+    "redis": "^3.0.2",
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dshukertjr/typescript-action.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dshukertjr/typescript-action/issues"
+  },
+  "homepage": "https://github.com/dshukertjr/typescript-action#readme"
+}
