@@ -8,13 +8,10 @@ exports.main = async (event, callback) => {
   let email = results.body.properties.email
   let phone = results.body.properties.phone
 
-  console.log('email', email)
-
   callback({
     outputFields: {
-      email: email,
-      phone: phone
+      email,
+      phone
     }
   })
 }
-
