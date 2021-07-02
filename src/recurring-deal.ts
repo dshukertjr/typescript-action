@@ -1,4 +1,4 @@
-const hubspot = require('@hubspot/api-client')
+import * as hubspot from '@hubspot/api-client'
 
 /**
  * HubSpot will display an error when you paste this code, but it actually 
@@ -24,41 +24,21 @@ exports.main = async (event, callback) => {
 
     const deal = results.body.properties
 
-    const recurringDate = deal.recurring_date
+    const recurringDate = +deal.recurring_date
 
     const currentCloseDate = new Date(deal.closedate)
 
-    const nextCloseDate = new Date(deal.closedate)
-
-    nextCloseDate.setDate(recurringDate)
-    nextCloseDate.setMonth(nextCloseDate.getMonth() + 1)
-
-    // Check if newCloseDate is actually set at next month
-    // This could occur when the recurring date is set at for example 31st
-    // and currently it is January
-    if(!isNextMonth({currentCloseDate, nextCloseDate})) {
-        // If nextCloseDate is not 1 month from current close date,
-        // set the next close date at the end of next month
-        nextCloseDate.setDate(0)
-    }
-
-    console.log('currentCloseDate', currentCloseDate)
-    console.log('nextCloseDate', nextCloseDate)
-
-    nextCloseDate.setMilliseconds(0)
-    nextCloseDate.setSeconds(0)
-    nextCloseDate.setMinutes(0)
-    nextCloseDate.setHours(0)
+    const nextCloseDate = getSameDateOfNextMonth({currentCloseDate, recurringDate})
 
     const nextDealName = deal.dealname.replace(`${currentCloseDate.getFullYear()}-${currentCloseDate.getMonth() + 1}`, `${nextCloseDate.getFullYear()}-${nextCloseDate.getMonth() + 1}`)
 
     const newDealData = {
         properties: {
-            closedate: nextCloseDate.getTime(),
+            closedate: `${nextCloseDate.getTime()}`,
             amount: deal.amount,
             dealname: nextDealName,
             dealstage: deal.dealstage,
-            recurring_date: deal.recurring_date,
+            recurring_date: `${deal.recurring_date}`,
         }
     }
 
@@ -74,6 +54,28 @@ exports.main = async (event, callback) => {
     callback({
         outputFields: {}
     })
+}
+
+const getSameDateOfNextMonth = ({currentCloseDate, recurringDate}: {currentCloseDate: Date, recurringDate: number}): Date => {
+    const nextCloseDate = new Date(currentCloseDate.toDateString())
+
+    nextCloseDate.setDate(recurringDate)
+    nextCloseDate.setMonth(nextCloseDate.getMonth() + 1)
+
+    // Check if newCloseDate is actually set at next month
+    // This could occur when the recurring date is set at for example 31st
+    // and currently it is January
+    if(!isNextMonth({currentCloseDate, nextCloseDate})) {
+        // If nextCloseDate is not 1 month from current close date,
+        // set the next close date at the end of next month
+        nextCloseDate.setDate(0)
+    }
+
+    nextCloseDate.setMilliseconds(0)
+    nextCloseDate.setSeconds(0)
+    nextCloseDate.setMinutes(0)
+    nextCloseDate.setHours(0)
+    return nextCloseDate
 }
 
 /**
