@@ -19,26 +19,29 @@ exports.main = async (event, callback) => {
         'amount',
         'dealname',
         'dealstage',
-        'recurring_date'
+        'recurring_date',
+        'keiyakukaishibi',
     ])
 
     const deal = results.body.properties
 
-    const recurringDate = +deal.recurring_date
+    const nextCloseDate = new Date(deal.keiyakukaishibi)
+    nextCloseDate.setMilliseconds(0)
+    nextCloseDate.setSeconds(0)
+    nextCloseDate.setMinutes(0)
+    nextCloseDate.setHours(0)
 
-    const currentCloseDate = new Date(deal.closedate)
 
-    const nextCloseDate = getSameDateOfNextMonth({currentCloseDate, recurringDate})
-
-    const nextDealName = deal.dealname.replace(`${currentCloseDate.getFullYear()}-${currentCloseDate.getMonth() + 1}`, `${nextCloseDate.getFullYear()}-${nextCloseDate.getMonth() + 1}`)
+    const nextDealName = `${deal.dealname} ${nextCloseDate.getFullYear()}-${nextCloseDate.getMonth() + 1}`
 
     const newDealData = {
         properties: {
             closedate: `${nextCloseDate.getTime()}`,
             amount: deal.amount,
             dealname: nextDealName,
-            dealstage: deal.dealstage,
-            recurring_date: `${deal.recurring_date}`,
+            dealstage: '16654618',            
+            recurring_date: `${nextCloseDate.getDate()}`,
+            original_deal_id: dealId,
         }
     }
 
