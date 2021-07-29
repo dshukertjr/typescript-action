@@ -38,7 +38,7 @@ exports.main = async (event, callback) => {
             closedate: `${nextCloseDate.getTime()}`,
             amount: deal.amount,
             dealname: nextDealName,
-            dealstage: '16654618',
+            dealstage: deal.dealstage,
             recurring_date: `${deal.recurring_date}`,
             original_deal_id: deal.original_deal_id
         }
