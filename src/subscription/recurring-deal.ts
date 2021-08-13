@@ -20,7 +20,6 @@ exports.main = async (event, callback) => {
         'dealname',
         'dealstage',
         'recurring_date',
-        'original_deal_id',
     ])
 
     const deal = results.body.properties
@@ -40,7 +39,6 @@ exports.main = async (event, callback) => {
             dealname: nextDealName,
             dealstage: deal.dealstage,
             recurring_date: `${deal.recurring_date}`,
-            original_deal_id: deal.original_deal_id
         }
     }
 
